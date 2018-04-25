@@ -1,7 +1,5 @@
 import numpy as np
 import cv2
-import tkinter
-from playsound import playsound
 import pygame
 
 cv2.namedWindow('Piano')
@@ -36,11 +34,11 @@ def sound_make(event,x,y,flags,prameters):
             counter2+=1
 
 for x in range(0,512,46):
-    cv2.rectangle(img,(0,0),(x,128),(255,255,255),2)
+    cv2.rectangle(img,(0,0),(x,128),(255,255,255),-1)
 for y in range(30,482,46):
     if(y==168 or y==306):
         continue
-    cv2.rectangle(img,(y,0),(y+32,58),(0,0,255),2)
+    cv2.rectangle(img,(y,0),(y+32,58),(0,0,255)-1)
     print(y)
 
 
