@@ -1,12 +1,16 @@
 import cv2
 import numpy as np
 
-color = (255,0,0)
+colors = [(0,0,255), (0,128,255), (0,255,255), (0,255,0), (255,255,0), (255,0,0), (255,0,127), (255,51,255), (255,255,255)]
+colorIndex = 0
 windowHeight = 900
 windowWidth = 1500
 sizeOfColorChoices = 100
-sizeOfmenuWindow = 170 
-choice = "paint";
+sizeOfmenuWindow = 170
+sizeOfCalculator = 700
+sizeOfCalButtons = 150
+choice = "Calculator"
+
 img = np.zeros((windowHeight,windowWidth,3), np.uint8)
 
 def setMenu():
@@ -20,52 +24,48 @@ def setMenu():
 	cv2.putText(img, "Calculator", (windowWidth-sizeOfmenuWindow,280), cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,0),2,cv2.LINE_AA)
 
 def setColors():
-    cv2.rectangle(img,(0,0),(sizeOfColorChoices, sizeOfColorChoices),(0,0,255),-1)
+    for i in range(9):
+        cv2.rectangle(img,(0,sizeOfColorChoices*i),(sizeOfC olorChoices, sizeOfColorChoices*i+sizeOfColorChoices), colors[i] ,-1)
 
-    cv2.rectangle(img,(0,sizeOfColorChoices),(sizeOfColorChoices, sizeOfColorChoices*2),(0,128,255),-1)
+def setCalculator():
+    cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2), 0),(int(windowWidth/2+sizeOfCalculator/2), windowHeight),(0,255,0),2)
+    cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2)+10, 10),(int(windowWidth/2+sizeOfCalculator/2)-10, sizeOfCalButtons),(0,255,0),2)
 
-    cv2.rectangle(img,(0,sizeOfColorChoices*2),(sizeOfColorChoices, sizeOfColorChoices*3),(0,255,255),-1)
-
-    cv2.rectangle(img,(0,sizeOfColorChoices*3),(sizeOfColorChoices, sizeOfColorChoices*4),(0,255,0),-1)
-
-    cv2.rectangle(img,(0,sizeOfColorChoices*4),(sizeOfColorChoices, sizeOfColorChoices*5),(255,255,0),-1)
-
-    cv2.rectangle(img,(0,sizeOfColorChoices*5),(sizeOfColorChoices, sizeOfColorChoices*6),(255,0,0),-1)
-
-    cv2.rectangle(img,(0,sizeOfColorChoices*6),(sizeOfColorChoices, sizeOfColorChoices*7),(255,0,127),-1)
-
-    cv2.rectangle(img,(0,sizeOfColorChoices*7),(sizeOfColorChoices, sizeOfColorChoices*8),(255,51,255),-1)
-
-    cv2.rectangle(img,(0,sizeOfColorChoices*8),(sizeOfColorChoices, sizeOfColorChoices*9),(255,255,255),-1)
+    cv2.rectangle(img,(((int(windowWidth/2-sizeOfCalculator/2)+10+), int(windowWidth/2-sizeOfCalculator/2) ), (),(0,255,0),2)
+			
 
 def move(event,x,y,flags,param):
    
-	if choice is "paint":
-		
-		global color
+    global colorIndex
+    global img
+    global choice
 
-		if x < sizeOfColorChoices:
-			if y < sizeOfColorChoices:
-				color = (0,0,255)
-			elif y < sizeOfColorChoices*2:
-				color = (0,128,255)
-			elif y < sizeOfColorChoices*3:
-				color = (0,255,255)
-			elif y < sizeOfColorChoices*4:
-				color = (0,255,0)
-			elif y < sizeOfColorChoices*5:
-				color = (255,255,0)
-			elif y < sizeOfColorChoices*6:
-				color = (255,0,0)
-			elif y < sizeOfColorChoices*7:
-				color = (255,0,127)
-			elif y < sizeOfColorChoices*8:
-				color = (255,51,255)
-			elif y < sizeOfColorChoices*9:
-				color = (255,255,255)
+    if x > windowWidth - sizeOfmenuWindow and y < 320:
+        if y < 100:
+            choice = "paint"
+            img = np.zeros((windowHeight,windowWidth,3), np.uint8)
+            setColors()
+        elif y < 210:
+            choice = "piano"
+            img = np.zeros((windowHeight,windowWidth,3), np.uint8)
+        elif y < 320:
+            choice = "calculator"
+            img = np.zeros((windowHeight,windowWidth,3), np.uint8)
+            setCalculator()
 
-		if event == cv2.EVENT_MOUSEMOVE:
-			cv2.circle(img,(x,y),8, color, -1)
+        setMenu()
+    
+    if choice is "paint":
+        if x < sizeOfColorChoices:
+        
+            for i in range(9):
+                if y < sizeOfColorChoices * i + sizeOfColorChoices:
+                    colorIndex = i
+                    break
+
+        if event == cv2.EVENT_MOUSEMOVE:
+            cv2.circle(img,(x,y),12, colors[colorIndex], -1)
+
 
 cv2.namedWindow('image')
 cv2.setMouseCallback('image',move)
