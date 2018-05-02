@@ -25,14 +25,38 @@ def setMenu():
 
 def setColors():
     for i in range(9):
-        cv2.rectangle(img,(0,sizeOfColorChoices*i),(sizeOfC olorChoices, sizeOfColorChoices*i+sizeOfColorChoices), colors[i] ,-1)
+        cv2.rectangle(img,(0,sizeOfColorChoices*i),(sizeOfColorChoices, sizeOfColorChoices*i+sizeOfColorChoices), colors[i] ,-1)
 
 def setCalculator():
-    cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2), 0),(int(windowWidth/2+sizeOfCalculator/2), windowHeight),(0,255,0),2)
-    cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2)+10, 10),(int(windowWidth/2+sizeOfCalculator/2)-10, sizeOfCalButtons),(0,255,0),2)
+    cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2), 0),(int(windowWidth/2+sizeOfCalculator/2), windowHeight-50),(0,255,0),2)
+    cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2)+20, 20),(int(windowWidth/2+sizeOfCalculator/2)-20, sizeOfCalButtons),(0,255,0),2)
 
-    cv2.rectangle(img,(((int(windowWidth/2-sizeOfCalculator/2)+10+), int(windowWidth/2-sizeOfCalculator/2) ), (),(0,255,0),2)
-			
+    n = int(windowWidth/2-sizeOfCalculator/2)
+    
+    for y in range(4):
+        for x in range(4):
+            cv2.rectangle(img, (sizeOfCalButtons*x+20+(20*x)+n, sizeOfCalButtons*y+10+(20*y)+sizeOfCalButtons),(sizeOfCalButtons*x+sizeOfCalButtons+20+(20*x)+n, sizeOfCalButtons*y+sizeOfCalButtons+20+(20*y)+sizeOfCalButtons),(0,255,0),2)
+
+    for i in range(3):
+        cv2.putText(img, str(i+1), (n+50+sizeOfCalButtons*i+10+(20*i), sizeOfCalButtons*2-10), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
+
+    cv2.putText(img, "+", (n+50+sizeOfCalButtons*3+5+(20*3), sizeOfCalButtons*2-30), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
+
+    for i in range(3):
+        cv2.putText(img, str(i+4), (n+50+sizeOfCalButtons*i+10+(20*i), sizeOfCalButtons*3+10), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
+
+    cv2.putText(img, "-", (n+50+sizeOfCalButtons*3+5+(20*3), sizeOfCalButtons*3-10), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
+
+    for i in range(3):
+        cv2.putText(img, str(i+7), (n+50+sizeOfCalButtons*i+10+(20*i), sizeOfCalButtons*4+15), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
+
+    cv2.putText(img, "*", (n+50+sizeOfCalButtons*3+20+(20*3), sizeOfCalButtons*4+15), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
+
+    cv2.putText(img, "-/+", (n+20, sizeOfCalButtons*5+30), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
+    cv2.putText(img, "0", (n+85+sizeOfCalButtons*1, sizeOfCalButtons*5+30), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
+    cv2.putText(img, "=", (n+95+sizeOfCalButtons*2, sizeOfCalButtons*5+30), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
+
+    cv2.putText(img, "/", (n+95+sizeOfCalButtons*3, sizeOfCalButtons*5+40), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
 
 def move(event,x,y,flags,param):
    

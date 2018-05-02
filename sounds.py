@@ -3,7 +3,7 @@ import cv2
 import pygame
 
 cv2.namedWindow('Piano')
-img = np.zeros((512,512,3), np.uint8)
+img = np.zeros((600,1200,3), np.uint8)
 
 toneArray= ["Anote.wav","Bnote.wav","Cnote.wav","Dnote.wav","Enote.wav","Fnote.wav","Gnote.wav"]
 blackTones=["AFnote.wav","CSnote.wav","DSnote.wav","FSnote.wav","A2note.wav"]
@@ -38,7 +38,7 @@ for x in range(0,512,46):
 for y in range(30,482,46):
     if(y==168 or y==306):
         continue
-    cv2.rectangle(img,(y,0),(y+32,58),(0,0,255)-1)
+    cv2.rectangle(img,(y,0),(y+32,58),(0,0,255),-1)
     print(y)
 
 
