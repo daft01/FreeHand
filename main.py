@@ -9,7 +9,13 @@ sizeOfColorChoices = 100
 sizeOfmenuWindow = 170
 sizeOfCalculator = 700
 sizeOfCalButtons = 150
-choice = "Calculator"
+choice = "paint"
+
+fist_cascade = cv2.CascadeClassifier('fist.xml')
+
+if fist_cascade.empty():
+    print('WARNING: Fist cascade did not load')
+
 
 img = np.zeros((windowHeight,windowWidth,3), np.uint8)
 
@@ -58,8 +64,9 @@ def setCalculator():
 
     cv2.putText(img, "/", (n+95+sizeOfCalButtons*3, sizeOfCalButtons*5+40), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
 
-def move(event,x,y,flags,param):
+def move(x,y):
    
+    print(x,y)
     global colorIndex
     global img
     global choice
@@ -87,18 +94,29 @@ def move(event,x,y,flags,param):
                     colorIndex = i
                     break
 
-        if event == cv2.EVENT_MOUSEMOVE:
-            cv2.circle(img,(x,y),12, colors[colorIndex], -1)
+
+        cv2.circle(img,(x,y),12, colors[colorIndex], -1)
 
 
 cv2.namedWindow('image')
-cv2.setMouseCallback('image',move)
+#cv2.setMouseCallback('image',move)
 setMenu()
 setColors()
 
+handWindow = "HandDetection"
+cap = cv2.VideoCapture(0)
+
 while(1):
+    ret, videoImg = cap.read()
+    gray = cv2.cvtColor(videoImg, cv2.COLOR_BGR2GRAY)
     
-    cv2.imshow('image',img)
+    fist = fist_cascade.detectMultiScale(gray, 1.3,5)
+    
+    for(x,y,w,h) in fist:
+        move(windowWidth-x,y)
+        cv2.circle(videoImg,(x+int(w/2),y+int(h/2)),12, (0,0,255 ), -1)
+
+    cv2.imshow('img', img)
     
     if cv2.waitKey(20) & 0xFF == 113:
         break
