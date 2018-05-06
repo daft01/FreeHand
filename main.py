@@ -3,12 +3,12 @@ import numpy as np
 
 colors = [(0,0,255), (0,128,255), (0,255,255), (0,255,0), (255,255,0), (255,0,0), (255,0,127), (255,51,255), (255,255,255)]
 colorIndex = 0
-windowHeight = 900
-windowWidth = 1500
-sizeOfColorChoices = 100
+windowHeight = 700
+windowWidth = 1200
+sizeOfColorChoices = 80
 sizeOfmenuWindow = 170
-sizeOfCalculator = 700
-sizeOfCalButtons = 150
+sizeOfCalculator = 500
+sizeOfCalButtons = 100
 choice = "paint"
 
 fist_cascade = cv2.CascadeClassifier('fist.xml')
@@ -34,7 +34,7 @@ def setColors():
         cv2.rectangle(img,(0,sizeOfColorChoices*i),(sizeOfColorChoices, sizeOfColorChoices*i+sizeOfColorChoices), colors[i] ,-1)
 
 def setCalculator():
-    cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2), 0),(int(windowWidth/2+sizeOfCalculator/2), windowHeight-50),(0,255,0),2)
+    cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2), 0),(int(windowWidth/2+sizeOfCalculator/2), windowHeight-100),(0,255,0),2)
     cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2)+20, 20),(int(windowWidth/2+sizeOfCalculator/2)-20, sizeOfCalButtons),(0,255,0),2)
 
     n = int(windowWidth/2-sizeOfCalculator/2)
@@ -44,29 +44,27 @@ def setCalculator():
             cv2.rectangle(img, (sizeOfCalButtons*x+20+(20*x)+n, sizeOfCalButtons*y+10+(20*y)+sizeOfCalButtons),(sizeOfCalButtons*x+sizeOfCalButtons+20+(20*x)+n, sizeOfCalButtons*y+sizeOfCalButtons+20+(20*y)+sizeOfCalButtons),(0,255,0),2)
 
     for i in range(3):
-        cv2.putText(img, str(i+1), (n+50+sizeOfCalButtons*i+10+(20*i), sizeOfCalButtons*2-10), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
+        cv2.putText(img, str(i+1), (n+50+sizeOfCalButtons*i+(20*i), sizeOfCalButtons*2-10), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
 
-    cv2.putText(img, "+", (n+50+sizeOfCalButtons*3+5+(20*3), sizeOfCalButtons*2-30), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
-
-    for i in range(3):
-        cv2.putText(img, str(i+4), (n+50+sizeOfCalButtons*i+10+(20*i), sizeOfCalButtons*3+10), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
-
-    cv2.putText(img, "-", (n+50+sizeOfCalButtons*3+5+(20*3), sizeOfCalButtons*3-10), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
+    cv2.putText(img, "+", (n+50+sizeOfCalButtons*3+(20*3), sizeOfCalButtons*2-25), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
 
     for i in range(3):
-        cv2.putText(img, str(i+7), (n+50+sizeOfCalButtons*i+10+(20*i), sizeOfCalButtons*4+15), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
+        cv2.putText(img, str(i+4), (n+50+sizeOfCalButtons*i+(20*i), sizeOfCalButtons*3+10), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
 
-    cv2.putText(img, "*", (n+50+sizeOfCalButtons*3+20+(20*3), sizeOfCalButtons*4+15), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
+    cv2.putText(img, "-", (n+50+sizeOfCalButtons*3+(20*3)-5, sizeOfCalButtons*3), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
 
-    cv2.putText(img, "-/+", (n+20, sizeOfCalButtons*5+30), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
-    cv2.putText(img, "0", (n+85+sizeOfCalButtons*1, sizeOfCalButtons*5+30), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
-    cv2.putText(img, "=", (n+95+sizeOfCalButtons*2, sizeOfCalButtons*5+30), cv2.FONT_HERSHEY_SIMPLEX,3,(0,255,255),2,cv2.LINE_AA)
+    for i in range(3):
+        cv2.putText(img, str(i+7), (n+50+sizeOfCalButtons*i+(20*i), sizeOfCalButtons*4+20), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
 
-    cv2.putText(img, "/", (n+95+sizeOfCalButtons*3, sizeOfCalButtons*5+40), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
+    cv2.putText(img, "*", (n+50+sizeOfCalButtons*3+5+(20*3), sizeOfCalButtons*4+10), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
+
+    cv2.putText(img, "-/+", (n+30, sizeOfCalButtons*5+30), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2,cv2.LINE_AA)
+    cv2.putText(img, "0", (n+70+sizeOfCalButtons*1, sizeOfCalButtons*5+40), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
+    cv2.putText(img, "=", (n+85+sizeOfCalButtons*2, sizeOfCalButtons*5+40), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
+    cv2.putText(img, "/", (n+105+sizeOfCalButtons*3+10, sizeOfCalButtons*5+35), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2,cv2.LINE_AA)
 
 def move(x,y):
    
-    print(x,y)
     global colorIndex
     global img
     global choice
@@ -95,29 +93,31 @@ def move(x,y):
                     break
 
 
-        cv2.circle(img,(x,y),12, colors[colorIndex], -1)
+        cv2.circle(img,(x,y),8, colors[colorIndex], -1)
 
 
 cv2.namedWindow('image')
-#cv2.setMouseCallback('image',move)
 setMenu()
+
 setColors()
 
 handWindow = "HandDetection"
 cap = cv2.VideoCapture(0)
+cv2.namedWindow(handWindow)
+cv2.resizeWindow('image', windowWidth,windowHeight)
 
 while(1):
     ret, videoImg = cap.read()
     gray = cv2.cvtColor(videoImg, cv2.COLOR_BGR2GRAY)
-    
+
     fist = fist_cascade.detectMultiScale(gray, 1.3,5)
     
     for(x,y,w,h) in fist:
         move(windowWidth-x,y)
-        cv2.circle(videoImg,(x+int(w/2),y+int(h/2)),12, (0,0,255 ), -1)
+    #cv2.circle(videoImg,(x+int(w/2),y+int(h/2)),12, (0,0,255 ), -1)
 
     cv2.imshow('img', img)
-    
+#cv2.imshow('image', videoImg)
     if cv2.waitKey(20) & 0xFF == 113:
         break
 

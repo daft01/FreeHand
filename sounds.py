@@ -5,10 +5,6 @@ from playsound import playsound
 import pygame
 
 cv2.namedWindow('Piano')
-<<<<<<< HEAD
-=======
-#height 600 width 1500
->>>>>>> 2bcd5d09dec37c6635f7cb83a84791d3aac40a62
 img = np.zeros((600,1200,3), np.uint8)
 
 toneArray= ["Anote.wav","Bnote.wav","Cnote.wav","Dnote.wav","Enote.wav","Fnote.wav","Gnote.wav"]
@@ -45,21 +41,10 @@ for x in range(0,1200,110 ):
 for y in range(70,1170,110):
     if y==290 or y==730 or y==1060:
         continue
-<<<<<<< HEAD
-    cv2.rectangle(img,(y,0),(y+32,58),(0,0,255),-1)
-=======
     cv2.rectangle(img,(y,0),(y+80,210),(0,0,0),-1)
->>>>>>> 2bcd5d09dec37c6635f7cb83a84791d3aac40a62
-    print(y)
-
-
-
-
-
-# font = cv2.FON    T_HERSHEY_SIMPLEX
-# cv2.putText(img,'OpenCV',(10,500), font, 4,(255,255,255),2,cv2.LINE_AA)
 
 cv2.setMouseCallback('Piano', sound_make)
+
 while(1):
     cv2.imshow('Piano',img)
     if cv2.waitKey(20) & 0xFF == 113:
