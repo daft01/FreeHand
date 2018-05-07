@@ -63,6 +63,8 @@ def setCalculator():
     cv2.putText(img, "=", (n+85+sizeOfCalButtons*2, sizeOfCalButtons*5+40), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
     cv2.putText(img, "/", (n+105+sizeOfCalButtons*3+10, sizeOfCalButtons*5+35), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2,cv2.LINE_AA)
 
+def setPiano():
+    
 def move(x,y):
    
     global colorIndex
@@ -77,6 +79,7 @@ def move(x,y):
         elif y < 210:
             choice = "piano"
             img = np.zeros((windowHeight,windowWidth,3), np.uint8)
+            setPiano()
         elif y < 320:
             choice = "calculator"
             img = np.zeros((windowHeight,windowWidth,3), np.uint8)
@@ -114,10 +117,10 @@ while(1):
     
     for(x,y,w,h) in fist:
         move(windowWidth-x,y)
-    #cv2.circle(videoImg,(x+int(w/2),y+int(h/2)),12, (0,0,255 ), -1)
+        cv2.circle(videoImg,(x+int(w/2),y+int(h/2)),12, (0,0,255 ), -1)
 
     cv2.imshow('img', img)
-#cv2.imshow('image', videoImg)
+    cv2.imshow('image', videoImg)
     if cv2.waitKey(20) & 0xFF == 113:
         break
 
