@@ -10,12 +10,11 @@ sizeOfmenuWindow = 170
 sizeOfCalculator = 500
 sizeOfCalButtons = 100
 choice = "paint"
-calEquation = ""
 
-fist_cascade = cv2.CascadeClassifier('fist.xml')
+palm_cascade = cv2.CascadeClassifier('palm.xml')
 
-if fist_cascade.empty():
-    print('WARNING: Fist cascade did not load')
+if palm_cascade.empty():
+    print('WARNING: palm cascade did not load')
 
 
 img = np.zeros((windowHeight,windowWidth,3), np.uint8)
@@ -39,7 +38,7 @@ def setCalculator():
     cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2)+20, 20),(int(windowWidth/2+sizeOfCalculator/2)-20, sizeOfCalButtons),(0,255,0),2)
 
     n = int(windowWidth/2-sizeOfCalculator/2)
-    
+
     for y in range(4):
         for x in range(4):
             cv2.rectangle(img, (sizeOfCalButtons*x+20+(20*x)+n, sizeOfCalButtons*y+10+(20*y)+sizeOfCalButtons),(sizeOfCalButtons*x+sizeOfCalButtons+20+(20*x)+n, sizeOfCalButtons*y+sizeOfCalButtons+20+(20*y)+sizeOfCalButtons),(0,255,0),2)
@@ -66,13 +65,11 @@ def setCalculator():
 
 def setPiano():
     pass
-
 def move(x,y):
-   
+
     global colorIndex
     global img
     global choice
-    global calEquation
 
     if x > windowWidth - sizeOfmenuWindow and y < 320:
         if y < 100:
@@ -86,78 +83,29 @@ def move(x,y):
         elif y < 320:
             choice = "calculator"
             img = np.zeros((windowHeight,windowWidth,3), np.uint8)
-            calEquation = ""
             setCalculator()
 
         setMenu()
-    
+
     if choice is "paint":
         if x < sizeOfColorChoices:
-        
+
             for i in range(9):
                 if y < sizeOfColorChoices * i + sizeOfColorChoices:
                     colorIndex = i
                     break
-    
+
+
         cv2.circle(img,(x,y),8, colors[colorIndex], -1)
-        return
 
-    if choice is "piano":
-        pass
 
-    if choice is "calculator":
-        
-        if x > windowWidth/2-sizeOfCalculator/20 and x < windowWidth/2+sizeOfCalculator/2-20 and y > sizeOfCalButtons:
-            if y < sizeOfCalButtons*2+20:
-                if x < windowWidth/2-sizeOfCalculator/20 + sizeOfCalButtons:
-                    calEquation += "1"
-                elif x < windowWidth/2-sizeOfCalculator/20 + sizeOfCalButtons*2 + 20:
-                    calEquation += "2"
-                elif x < windowWidth/2-sizeOfCalculator/20 + sizeOfCalButtons*4 + 40:
-                    calEquation += "3"
-                else:
-                    calEquation += "+"
-
-            elif y < sizeOfCalButtons*3+40:
-                if x < windowWidth/2-sizeOfCalculator/20 + sizeOfCalButtons:
-                    calEquation += "4"
-                elif x < windowWidth/2-sizeOfCalculator/20 + sizeOfCalButtons*2 + 20:
-                    calEquation += "5"
-                elif x < windowWidth/2-sizeOfCalculator/20 + sizeOfCalButtons*4 + 40:
-                    calEquation += "6"
-                else:
-                    calEquation += "-"
-
-            elif y < sizeOfCalButtons*4+60:
-                if x < windowWidth/2-sizeOfCalculator/20 + sizeOfCalButtons:
-                    calEquation += "7"
-                elif x < windowWidth/2-sizeOfCalculator/20 + sizeOfCalButtons*2 + 20:
-                    calEquation += "8"
-                elif x < windowWidth/2-sizeOfCalculator/20 + sizeOfCalButtons*4 + 40:
-                    calEquation += "9"
-                else:
-                    calEquation += "*"
-
-            else:
-                if x < windowWidth/2-sizeOfCalculator/20 + sizeOfCalButtons:
-                    calEquation += "1"
-                elif x < windowWidth/2-sizeOfCalculator/20 + sizeOfCalButtons*2 + 20:
-                    calEquation += "2"
-                elif x < windowWidth/2-sizeOfCalculator/20 + sizeOfCalButtons*4 + 40:
-                    calEquation += "3"
-                else:
-                    calEquation += "/"
-
-        print(calEquation);
-
-                                                        
 cv2.namedWindow('image')
 setMenu()
 
 setColors()
 
 handWindow = "HandDetection"
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 cv2.namedWindow(handWindow)
 cv2.resizeWindow('image', windowWidth,windowHeight)
 
@@ -165,14 +113,14 @@ while(1):
     ret, videoImg = cap.read()
     gray = cv2.cvtColor(videoImg, cv2.COLOR_BGR2GRAY)
 
-    fist = fist_cascade.detectMultiScale(gray, 1.3,5)
-    
-    for(x,y,w,h) in fist:
+    palm = palm_cascade.detectMultiScale(gray, 1.3,5)
+
+    for(x,y,w,h) in palm:
         move(windowWidth-x,y)
-    #cv2.circle(videoImg,(x+int(w/2),y+int(h/2)),12, (0,0,255 ), -1)
+        cv2.circle(videoImg,(x+int(w/2),y+int(h/2)),12, (0,0,255 ), -1)
 
     cv2.imshow('img', img)
-#cv2.imshow('image', videoImg)
+    cv2.imshow('image', videoImg)
     if cv2.waitKey(20) & 0xFF == 113:
         break
 
