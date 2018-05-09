@@ -7,8 +7,8 @@ import pygame
 cv2.namedWindow('Piano')
 img = np.zeros((600,1200,3), np.uint8)
 
-toneArray= ["Anote.wav","Bnote.wav","Cnote.wav","Dnote.wav","Enote.wav","Fnote.wav","Gnote.wav"]
-blackTones=["AFnote.wav","CSnote.wav","DSnote.wav","FSnote.wav","A2note.wav"]
+toneArray= ["notes/Anote.wav","notes/Bnote.wav","notes/Cnote.wav","notes/Dnote.wav","notes/Enote.wav","notes/Fnote.wav","notes/Gnote.wav"]
+blackTones=["notes/AFnote.wav","notes/CSnote.wav","notes/DSnote.wav","notes/FSnote.wav","notes/A2note.wav"]
 
 def sound_make(event,x,y,flags,prameters):
     pygame.init()
@@ -51,4 +51,3 @@ while(1):
         break
 
 cv2.destroyAllWindows()
-

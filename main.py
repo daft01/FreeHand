@@ -65,7 +65,14 @@ def setCalculator():
     cv2.putText(img, "/", (n+105+sizeOfCalButtons*3+10, sizeOfCalButtons*5+35), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2,cv2.LINE_AA)
 
 def setPiano():
-    pass
+    cv2.rectangle(img,(0,0),(1200,600),(255,255,255),-1)
+
+    for x in range(0,1200,110 ):
+        cv2.rectangle(img,(0,0),(x,450),(0,0,0),0)
+    for y in range(70,1170,110):
+        if y==290 or y==730 or y==1060:
+            continue
+        cv2.rectangle(img,(y,0),(y+80,210),(0,0,0),-1)
 def move(x,y):
 
     global colorIndex
@@ -116,7 +123,7 @@ while(1):
     gray = cv2.cvtColor(videoImg, cv2.COLOR_BGR2GRAY)
 
     fist = fist_cascade.detectMultiScale(gray, 1.3,5)
-	
+
     for(x,y,w,h) in fist:
         move(windowWidth-x,y)
         cv2.circle(videoImg,(x+int(w/2),y+int(h/2)),12, (0,0,255 ), -1)
