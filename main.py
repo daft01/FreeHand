@@ -113,8 +113,8 @@ setColors()
 
 cap = cv2.VideoCapture(0)
 
-cap.set(3, windowHeight)
-cap.set(4, windowWidth)
+cap.set(3, windowWidth)
+cap.set(4, windowHeight)
 
 cv2.resizeWindow('image', windowWidth,windowHeight)
 
