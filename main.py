@@ -11,9 +11,11 @@ sizeOfCalculator = 500
 sizeOfCalButtons = 100
 choice = "paint"
 
+
+fist_cascade = cv2.CascadeClassifier('fist.xml')
 palm_cascade = cv2.CascadeClassifier('palm.xml')
 
-if palm_cascade.empty():
+if fist_cascade.empty():
     print('WARNING: palm cascade did not load')
 
 img = np.zeros((windowHeight,windowWidth,3), np.uint8)
@@ -87,13 +89,7 @@ def move(x,y):
         setMenu()
 
     if choice is "paint":
-<<<<<<< HEAD
         if x < sizeOfColorChoices*2:
-        
-=======
-        if x < sizeOfColorChoices:
-
->>>>>>> 7c8643805810aa937574e73d3779b9a577b9c343
             for i in range(9):
                 if y < sizeOfColorChoices * i + sizeOfColorChoices:
                     colorIndex = i
@@ -108,24 +104,20 @@ setMenu()
 
 setColors()
 
-handWindow = "HandDetection"
-cap = cv2.VideoCapture(1)
-cv2.namedWindow(handWindow)
+cap = cv2.VideoCapture(0)
+
+cap.set(3, windowHeight)
+cap.set(4, windowWidth)
+
 cv2.resizeWindow('image', windowWidth,windowHeight)
 
 while(1):
     ret, videoImg = cap.read()
     gray = cv2.cvtColor(videoImg, cv2.COLOR_BGR2GRAY)
 
-<<<<<<< HEAD
     fist = fist_cascade.detectMultiScale(gray, 1.3,5)
 	
     for(x,y,w,h) in fist:
-=======
-    palm = palm_cascade.detectMultiScale(gray, 1.3,5)
-
-    for(x,y,w,h) in palm:
->>>>>>> 7c8643805810aa937574e73d3779b9a577b9c343
         move(windowWidth-x,y)
         cv2.circle(videoImg,(x+int(w/2),y+int(h/2)),12, (0,0,255 ), -1)
 
