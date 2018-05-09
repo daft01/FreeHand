@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import pygame
 
 colors = [(0,0,255), (0,128,255), (0,255,255), (0,255,0), (255,255,0), (255,0,0), (255,0,127), (255,51,255), (255,255,255)]
 colorIndex = 0
@@ -65,7 +66,7 @@ def setCalculator():
     cv2.putText(img, "/", (n+105+sizeOfCalButtons*3+10, sizeOfCalButtons*5+35), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2,cv2.LINE_AA)
 
 def setPiano():
-    cv2.rectangle(img,(0,0),(1200,600),(255,255,255),-1)
+    cv2.rectangle(img,(0,0),(1100,377),(255,255,255),-1)
 
     for x in range(0,1200,110 ):
         cv2.rectangle(img,(0,0),(x,450),(0,0,0),0)
@@ -101,7 +102,31 @@ def move(x,y):
                 if y < sizeOfColorChoices * i + sizeOfColorChoices:
                     colorIndex = i
                     break
+    if choice is "piano":
+        toneArray= ["notes/Anote.wav","notes/Bnote.wav","notes/Cnote.wav","notes/Dnote.wav","notes/Enote.wav","notes/Fnote.wav","notes/Gnote.wav"]
+        blackTones=["notes/AFnote.wav","notes/CSnote.wav","notes/DSnote.wav","notes/FSnote.wav","notes/A2note.wav"]
 
+        pygame.init()
+        counter=0
+        counter2=0
+        for i in range(0,1200,110):
+            temp=i
+            temp+=1
+            temp2= i+70
+            if (x>temp2 and x<temp2+80) and y<210 and x <1100:
+                pygame.mixer.music.load(blackTones[counter2])
+                pygame.mixer.music.play()
+            elif (x<temp and i !=0) and (x>= i-110 and y<450) and x <1100:
+                pygame.mixer.music.load(toneArray[counter])
+                pygame.mixer.music.play()
+            if counter ==6:
+                counter=0
+            else:
+                counter+=1
+            if counter2 ==4:
+                counter2=0
+            else:
+                counter2+=1
 
         cv2.circle(img,(x,y),8, colors[colorIndex], -1)
 
@@ -113,8 +138,8 @@ setColors()
 
 cap = cv2.VideoCapture(0)
 
-cap.set(3, windowWidth)
-cap.set(4, windowHeight)
+cap.set(3, 1200)
+cap.set(4, 700)
 
 cv2.resizeWindow('image', windowWidth,windowHeight)
 

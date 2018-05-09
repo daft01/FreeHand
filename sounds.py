@@ -34,7 +34,7 @@ def sound_make(event,x,y,flags,prameters):
         else:
             counter2+=1
 
-cv2.rectangle(img,(0,0),(1200,600),(255,255,255),-1)
+cv2.rectangle(img,(0,0),(1100,377),(255,255,255),-1)
 
 for x in range(0,1200,110 ):
     cv2.rectangle(img,(0,0),(x,450),(0,0,0),0)
