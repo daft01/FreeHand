@@ -3,8 +3,8 @@ import numpy as np
 
 colors = [(0,0,255), (0,128,255), (0,255,255), (0,255,0), (255,255,0), (255,0,0), (255,0,127), (255,51,255), (255,255,255)]
 colorIndex = 0
-windowHeight = 700
-windowWidth = 1200
+windowHeight = 720
+windowWidth = 1280
 sizeOfColorChoices = 80
 sizeOfmenuWindow = 170
 sizeOfCalculator = 500
@@ -16,7 +16,6 @@ fist_cascade = cv2.CascadeClassifier('fist.xml')
 
 if fist_cascade.empty():
     print('WARNING: Fist cascade did not load')
-
 
 img = np.zeros((windowHeight,windowWidth,3), np.uint8)
 
@@ -32,7 +31,7 @@ def setMenu():
 
 def setColors():
     for i in range(9):
-        cv2.rectangle(img,(0,sizeOfColorChoices*i),(sizeOfColorChoices, sizeOfColorChoices*i+sizeOfColorChoices), colors[i] ,-1)
+        cv2.rectangle(img,(0,sizeOfColorChoices*i),(sizeOfColorChoices*2, sizeOfColorChoices*i+sizeOfColorChoices), colors[i] ,-1)
 
 def setCalculator():
     cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2), 0),(int(windowWidth/2+sizeOfCalculator/2), windowHeight-100),(0,255,0),2)
@@ -92,7 +91,7 @@ def move(x,y):
         setMenu()
     
     if choice is "paint":
-        if x < sizeOfColorChoices:
+        if x < sizeOfColorChoices*2:
         
             for i in range(9):
                 if y < sizeOfColorChoices * i + sizeOfColorChoices:
@@ -166,7 +165,7 @@ while(1):
     gray = cv2.cvtColor(videoImg, cv2.COLOR_BGR2GRAY)
 
     fist = fist_cascade.detectMultiScale(gray, 1.3,5)
-    
+	
     for(x,y,w,h) in fist:
         move(windowWidth-x,y)
     #cv2.circle(videoImg,(x+int(w/2),y+int(h/2)),12, (0,0,255 ), -1)
