@@ -123,10 +123,12 @@ while(1):
     gray = cv2.cvtColor(videoImg, cv2.COLOR_BGR2GRAY)
 
     fist = fist_cascade.detectMultiScale(gray, 1.3,5)
-
+    palm = palm_cascade.detectMultiScale(gray, 1.3,5)
     for(x,y,w,h) in fist:
         move(windowWidth-x,y)
         cv2.circle(videoImg,(x+int(w/2),y+int(h/2)),12, (0,0,255 ), -1)
+    for(x,y,w,h) in palm:
+        cv2.circle(videoImg,(x+int(w/2),y+int(h/2)),12, (0,255,0 ), 1)
 
     cv2.imshow('img', img)
     cv2.imshow('image', videoImg)
