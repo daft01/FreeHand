@@ -3,6 +3,9 @@ import numpy as np
 import pygame
 
 colors = [(0,0,255), (0,128,255), (0,255,255), (0,255,0), (255,255,0), (255,0,0), (255,0,127), (255,51,255), (255,255,255)]
+toneArray= ["notes/Anote.wav","notes/Bnote.wav","notes/Cnote.wav","notes/Dnote.wav","notes/Enote.wav","notes/Fnote.wav","notes/Gnote.wav"]
+blackTones=["notes/AFnote.wav","notes/CSnote.wav","notes/DSnote.wav","notes/FSnote.wav","notes/A2note.wav"]
+
 colorIndex = 0
 windowHeight = 720
 windowWidth = 1280
@@ -12,16 +15,14 @@ sizeOfCalculator = 500
 sizeOfCalButtons = 100
 choice = "paint"
 
-
 fist_cascade = cv2.CascadeClassifier('fist.xml')
-palm_cascade = cv2.CascadeClassifier('palm.xml')
 
 if fist_cascade.empty():
     print('WARNING: palm cascade did not load')
 
 img = np.zeros((windowHeight,windowWidth,3), np.uint8)
 
-def setMenu():
+def setMenu(img = img):
 	cv2.rectangle(img,(windowWidth-sizeOfmenuWindow,0),(windowWidth, 100),(255,255,255),-1)
 	cv2.putText(img, "Paint", (windowWidth-sizeOfmenuWindow+30,50), cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,0),2,cv2.LINE_AA)
 
@@ -46,7 +47,7 @@ def setCalculator():
             cv2.rectangle(img, (sizeOfCalButtons*x+20+(20*x)+n, sizeOfCalButtons*y+10+(20*y)+sizeOfCalButtons),(sizeOfCalButtons*x+sizeOfCalButtons+20+(20*x)+n, sizeOfCalButtons*y+sizeOfCalButtons+20+(20*y)+sizeOfCalButtons),(0,255,0),2)
 
     for i in range(3):
-        cv2.putText(img, str(i+1), (n+50+sizeOfCalButtons*i+(20*i), sizeOfCalButtons*2-10), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
+        cv2.putText(img, str(i+1), (n+50+ sizeOfCalButtons*i+(20*i), sizeOfCalButtons*2-10), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
 
     cv2.putText(img, "+", (n+50+sizeOfCalButtons*3+(20*3), sizeOfCalButtons*2-25), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
 
@@ -74,27 +75,25 @@ def setPiano():
         if y==290 or y==730 or y==1060:
             continue
         cv2.rectangle(img,(y,0),(y+80,210),(0,0,0),-1)
+
 def move(x,y):
 
     global colorIndex
-    global img
     global choice
-
+    global img
+    
     if x > windowWidth - sizeOfmenuWindow and y < 320:
         if y < 100:
             choice = "paint"
             img = np.zeros((windowHeight,windowWidth,3), np.uint8)
             setColors()
+            setMenu(img)
         elif y < 210:
             choice = "piano"
-            img = np.zeros((windowHeight,windowWidth,3), np.uint8)
             setPiano()
         elif y < 320:
             choice = "calculator"
-            img = np.zeros((windowHeight,windowWidth,3), np.uint8)
             setCalculator()
-
-        setMenu()
 
     if choice is "paint":
         if x < sizeOfColorChoices*2:
@@ -102,10 +101,8 @@ def move(x,y):
                 if y < sizeOfColorChoices * i + sizeOfColorChoices:
                     colorIndex = i
                     break
-    if choice is "piano":
-        toneArray= ["notes/Anote.wav","notes/Bnote.wav","notes/Cnote.wav","notes/Dnote.wav","notes/Enote.wav","notes/Fnote.wav","notes/Gnote.wav"]
-        blackTones=["notes/AFnote.wav","notes/CSnote.wav","notes/DSnote.wav","notes/FSnote.wav","notes/A2note.wav"]
 
+    elif choice is "piano":
         pygame.init()
         counter=0
         counter2=0
@@ -127,11 +124,9 @@ def move(x,y):
                 counter2=0
             else:
                 counter2+=1
+    else:
+        pass
 
-        cv2.circle(img,(x,y),8, colors[colorIndex], -1)
-
-
-cv2.namedWindow('image')
 setMenu()
 
 setColors()
@@ -141,23 +136,40 @@ cap = cv2.VideoCapture(0)
 cap.set(3, 1200)
 cap.set(4, 700)
 
-cv2.resizeWindow('image', windowWidth,windowHeight)
+pointX = 0
+pointY = 0
 
 while(1):
     ret, videoImg = cap.read()
+    
     gray = cv2.cvtColor(videoImg, cv2.COLOR_BGR2GRAY)
 
     fist = fist_cascade.detectMultiScale(gray, 1.3,5)
-    palm = palm_cascade.detectMultiScale(gray, 1.3,5)
-    for(x,y,w,h) in fist:
-        move(windowWidth-x,y)
-        cv2.circle(videoImg,(x+int(w/2),y+int(h/2)),12, (0,0,255 ), -1)
-    for(x,y,w,h) in palm:
-        cv2.circle(videoImg,(x+int(w/2),y+int(h/2)),12, (0,255,0 ), 1)
+    
+    if choice is not "paint":
+        img = videoImg
+        setMenu(img)
+        if(choice is "piano"):
+            setPiano()
+        else:
+            setCalculator()
+        for(x,y,w,h) in fist:
+            pointX = x+int(w/2)
+            pointY = y+int(h/2)
+            move(pointX,pointY)
+    else:
+        for(x,y,w,h) in fist:
+            pointX = x+int(w/2)
+            pointY = y+int(h/2)
+            move(pointX,pointY)
 
-    cv2.imshow('img', img)
-    cv2.imshow('image', videoImg)
+    cv2.circle(img,(pointX,pointY),8, colors[colorIndex], -1)
+
+    pointX = -1
+    pointY = -1
     if cv2.waitKey(20) & 0xFF == 113:
         break
+
+    cv2.imshow('image', img)
 
 cv2.destroyAllWindows()
