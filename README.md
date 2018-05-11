@@ -55,6 +55,6 @@ as:
 Some future work that the group would like to work on is adding different entertainment applications that utilize
 OpenCV's great functionality. A certain project that was discussed but time did not allow for us too finish, is a
 face swap feature that recognizes 2 or more human faces and swaps them in real time video capture. Optimizing the
-application to run using too much CPU power is also a future feature that would be beneficial to this project; using
-less computer while running much faster and smoother would be ideal for this project.
+application to run using too much CPU power is also a future feature that would be beneficial to this project; 
+using less computer while running much faster and smoother would be ideal for this project.
 ```
