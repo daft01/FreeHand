@@ -6,6 +6,8 @@ colors = [(0,0,255), (0,128,255), (0,255,255), (0,255,0), (255,255,0), (255,0,0)
 toneArray= ["notes/Anote.wav","notes/Bnote.wav","notes/Cnote.wav","notes/Dnote.wav","notes/Enote.wav","notes/Fnote.wav","notes/Gnote.wav"]
 blackTones=["notes/AFnote.wav","notes/CSnote.wav","notes/DSnote.wav","notes/FSnote.wav","notes/A2note.wav"]
 
+calEquation = ""
+
 colorIndex = 0
 windowHeight = 720
 windowWidth = 1280
@@ -13,6 +15,7 @@ sizeOfColorChoices = 80
 sizeOfmenuWindow = 170
 sizeOfCalculator = 500
 sizeOfCalButtons = 100
+pressCalButton = True
 choice = "paint"
 
 fist_cascade = cv2.CascadeClassifier('fist.xml')
@@ -39,6 +42,7 @@ def setColors():
 def setCalculator():
     cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2), 0),(int(windowWidth/2+sizeOfCalculator/2), windowHeight-100),(0,255,0),2)
     cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2)+20, 20),(int(windowWidth/2+sizeOfCalculator/2)-20, sizeOfCalButtons),(0,255,0),2)
+    cv2.cv2.putText(img, calEquation, (int(windowWidth/2-sizeOfCalculator/2)+20, sizeOfCalButtons-25), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
 
     n = int(windowWidth/2-sizeOfCalculator/2)
 
@@ -61,13 +65,13 @@ def setCalculator():
 
     cv2.putText(img, "*", (n+50+sizeOfCalButtons*3+5+(20*3), sizeOfCalButtons*4+10), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
 
-    cv2.putText(img, "-/+", (n+30, sizeOfCalButtons*5+30), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2,cv2.LINE_AA)
+    cv2.putText(img, "C", (n+30, sizeOfCalButtons*5+30), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2,cv2.LINE_AA)
     cv2.putText(img, "0", (n+70+sizeOfCalButtons*1, sizeOfCalButtons*5+40), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
     cv2.putText(img, "=", (n+85+sizeOfCalButtons*2, sizeOfCalButtons*5+40), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
     cv2.putText(img, "/", (n+105+sizeOfCalButtons*3+10, sizeOfCalButtons*5+35), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2,cv2.LINE_AA)
 
 def setPiano():
-    cv2.rectangle(img,(0,0),(1100,377),(255,255,255),-1)
+    cv2.rectangle(img,(0,0),(1100,450),(255,255,255),-1)
 
     for x in range(0,1200,110 ):
         cv2.rectangle(img,(0,0),(x,450),(0,0,0),0)
@@ -81,6 +85,7 @@ def move(x,y):
     global colorIndex
     global choice
     global img
+    global calEquation
     
     if x > windowWidth - sizeOfmenuWindow and y < 320:
         if y < 100:
@@ -125,8 +130,48 @@ def move(x,y):
             else:
                 counter2+=1
     else:
-        pass
+        n = int(windowWidth/2-sizeOfCalculator/2)
+        
+        if(pressCalButton and x > 20+n and x < windowWidth/2+sizeOfCalculator/2-20 and y>sizeOfCalButtons+10 and y < sizeOfCalButtons*3+sizeOfCalButtons+20+(20*3)+sizeOfCalButtons):
+            
+            if y< sizeOfCalButtons*2+20:
+                if x < n+sizeOfCalButtons+30:
+                    calEquation += "1"
+                elif x < n+sizeOfCalButtons*2+50:
+                    calEquation += "2"
+                elif x < n+sizeOfCalButtons*3+70:
+                    calEquation += "3"
+                elif x < n+sizeOfCalButtons*4+90:
+                    calEquation += "+"
+            elif y< sizeOfCalButtons*3+40:
+                if x < n+sizeOfCalButtons+30:
+                    calEquation += "4"
+                elif x < n+sizeOfCalButtons*2+50:
+                    calEquation += "5"
+                elif x < n+sizeOfCalButtons*3+70:
+                    calEquation += "6"
+                elif x < n+sizeOfCalButtons*4+90:
+                    calEquation += "-"
 
+            elif y< sizeOfCalButtons*4+60:
+                if x < n+sizeOfCalButtons+30:
+                    calEquation += "7"
+                elif x < n+sizeOfCalButtons*2+50:
+                    calEquation += "8"
+                elif x < n+sizeOfCalButtons*3+70:
+                    calEquation += "9"
+                elif x < n+sizeOfCalButtons*4+90:
+                    calEquation += "*"
+                                    
+            elif y < sizeOfCalButtons*5+80:
+                if x < n+sizeOfCalButtons+30:
+                    calEquation = ""
+                elif x < n+sizeOfCalButtons*2+50:
+                    calEquation += "0"
+                elif x < n+sizeOfCalButtons*3+70:
+                    calEquation = str(eval(calEquation))
+                elif x < n+sizeOfCalButtons*4+90:
+                    calEquation += "/"
 setMenu()
 
 setColors()
@@ -141,6 +186,7 @@ pointY = 0
 
 while(1):
     ret, videoImg = cap.read()
+    videoImg = cv2.flip(videoImg, 1)
     
     gray = cv2.cvtColor(videoImg, cv2.COLOR_BGR2GRAY)
 
@@ -157,6 +203,12 @@ while(1):
             pointX = x+int(w/2)
             pointY = y+int(h/2)
             move(pointX,pointY)
+
+        if(pointX is -1):
+            pressCalButton = True
+        else:
+            pressCalButton = False
+            
     else:
         for(x,y,w,h) in fist:
             pointX = x+int(w/2)
