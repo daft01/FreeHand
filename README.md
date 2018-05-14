@@ -11,13 +11,12 @@
 ## Date : May 11, 2018
 
 ## How To Use **_FreeHand_** :
-- Mouse Move == Palm Gesture
 - Mouse Click == Fist Gesture
 ```
 FreeHand is an Open Source Computer Vision program that tracks the user's hand, and assigns it computer mouse 
 properties. Freehand utilizes the computer's front facing camera and uses Haard Cascade Classifiers to assign
-a mousemove to the user's palm and a mouseclick to the user's fist. The user has to utilize both the hand and
-fist to run the program. Freehand currently has 3 different entertainment options to explore:
+a mouseclick to the user's fist. The user has to utilize their fist to run the program. Freehand currently has
+a3 different entertainment options to explore:
 ```
 - Paint
 - Piano
@@ -26,13 +25,13 @@ fist to run the program. Freehand currently has 3 different entertainment option
 ###### Paint
 ```
 The Paint application creates an empty canvas in which you can use FreeHands tracking system to create artwork;
-There are several options for colors that you can choose from by simply dragging your (hand)mouse to the
+There are several options for colors that you can choose from by simply dragging your (fist)mouse to the
 designated area that contains the different colors.
 ```
 ###### Piano
 ```
 The Piano application has a OpenCV generated keyboard with specific notes assigned to each key. All you have to
-to play music is use the (hand)mouse gestures to hover above the wanted keys. The avaliable notes are as follows:
+to play music is use the (fist)mouse gestures to hover above the wanted keys. The avaliable notes are as follows:
 
 - A2      - Bf      - Cs      - Ds      - E      - Fs      - G
 - Af      - B       - C       - D                - F
