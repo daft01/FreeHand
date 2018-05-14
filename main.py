@@ -1,4 +1,4 @@
-'''
+'''
 COURSE: CST 205 Multimedia Design and Programing
 TITLE:  FreeHand
 AUTHORS:
@@ -230,11 +230,9 @@ pointY = 0
 while(1):
     ret, videoImg = cap.read()
     videoImg = cv2.flip(videoImg, 1)
-'''
-Gray makes the video into a grayscale form in order for the fist to be recognized easier fist detects the actual fist from the gray varibale
-'''
-    gray = cv2.cvtColor(videoImg, cv2.COLOR_BGR2GRAY)
 
+#Gray makes the video into a grayscale form in order for the fist to be recognized easier fist detects the actual fist from the gray variable.
+    gray = cv2.cvtColor(videoImg, cv2.COLOR_BGR2GRAY)
     fist = fist_cascade.detectMultiScale(gray, 1.3,5)
 
     if choice is not "paint":
