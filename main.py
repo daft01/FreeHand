@@ -31,6 +31,15 @@ sizeOfCalButtons = 100
 pressCalButton = True
 choice = "paint"
 
+'''
+Title: haarcascade
+Author: Aravindlivewire
+Link: https://github.com/Aravindlivewire/Opencv/blob/master/haarcascade/fist.xml
+
+This is the cascade classifier that is trained to detect a fist using the various
+patterns the classifer searches for. We used this specific classifier to searche
+for our fist then we assigned it to our move function.
+'''
 fist_cascade = cv2.CascadeClassifier('fist.xml')
 
 if fist_cascade.empty():
@@ -93,7 +102,10 @@ def setCalculator():
     cv2.putText(img, "0", (n+70+sizeOfCalButtons*1, sizeOfCalButtons*5+40), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
     cv2.putText(img, "=", (n+85+sizeOfCalButtons*2, sizeOfCalButtons*5+40), cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
     cv2.putText(img, "/", (n+105+sizeOfCalButtons*3+10, sizeOfCalButtons*5+35), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2,cv2.LINE_AA)
-
+'''
+setPiano function creates the virtual piano on the openCV window. These are later used to
+assign the individual notes from the notes.py file.
+'''
 def setPiano():
     cv2.rectangle(img,(0,0),(1100,450),(255,255,255),-1)
 
@@ -103,7 +115,14 @@ def setPiano():
         if y==290 or y==730 or y==1060:
             continue
         cv2.rectangle(img,(y,0),(y+80,210),(0,0,0),-1)
-
+'''
+The move function is the main portion of the our code that utilizes the fist cascade
+to assign the computer mouse properties to the fist. This function then checks the
+x and y postion of the fist to dictate if any action should be taken using the coordinates
+of the different object in the individual applicationsself.
+ex: Dragging the fist to the left of the paint application checks if a new paint pigment
+should be assigned to the brush movement.
+'''
 def move(x,y):
 
     global colorIndex
@@ -211,8 +230,9 @@ pointY = 0
 while(1):
     ret, videoImg = cap.read()
     videoImg = cv2.flip(videoImg, 1)
-''' gray gets the makes the video into a grayscale form in order for the fist to be recognized easier
-    fist detects the actual fist from the gray variable. '''
+'''
+Gray makes the video into a grayscale form in order for the fist to be recognized easier fist detects the actual fist from the gray varibale
+'''
     gray = cv2.cvtColor(videoImg, cv2.COLOR_BGR2GRAY)
 
     fist = fist_cascade.detectMultiScale(gray, 1.3,5)
