@@ -4,6 +4,7 @@ TITLE:  FreeHand
 AUTHORS:
             Iris Manriquez | Daniel Morales | Edgar Reyes
 DATE:   May 13th, 2018
+LINK: https://github.com/daft01/FreeHand
 ABSTRACT:
 
 FreeHand is an open source project that uses OPEN SOURCE COMPUTER VISION to assign computer mouse properties to
