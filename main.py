@@ -1,6 +1,19 @@
-import cv2
+'''
+COURSE: CST 205 Multimedia Design and Programing
+TITLE:  FreeHand
+AUTHORS:
+            Iris Manriquez | Daniel Morales | Edgar Reyes
+DATE:   May 13th, 2018
+ABSTRACT:
+
+FreeHand is an open source project that uses OPEN SOURCE COMPUTER VISION to assign computer mouse properties to
+a user's hand gestures, such as a fist. The user's hand gestures can then do multiple actions within each individual
+application in the program, like play notes in a piano, or paint using various paints and brushstrokes. FreeHand is
+essential a program that uses hand recognition to replace the usual computer mouse usage.
+'''
+import cv2 #cv2 and numpy libraries were used by all group members to create this project.
 import numpy as np
-import pygame
+import pygame #pygame was individually used by Iris Manriquez to create the piano notes.
 
 colors = [(0,0,255), (0,128,255), (0,255,255), (0,255,0), (255,255,0), (255,0,0), (255,0,127), (255,51,255), (255,255,255)]
 toneArray= ["notes/Anote.wav","notes/Bnote.wav","notes/Cnote.wav","notes/Dnote.wav","notes/Enote.wav","notes/Fnote.wav","notes/Gnote.wav"]
@@ -25,6 +38,10 @@ if fist_cascade.empty():
 
 img = np.zeros((windowHeight,windowWidth,3), np.uint8)
 
+'''
+The SetMenu function creates the menu on the right side of the program which allows
+the user to switch between the individuals applications inside FreeHand.
+'''
 def setMenu(img = img):
 	cv2.rectangle(img,(windowWidth-sizeOfmenuWindow,0),(windowWidth, 100),(255,255,255),-1)
 	cv2.putText(img, "Paint", (windowWidth-sizeOfmenuWindow+30,50), cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,0),2,cv2.LINE_AA)
@@ -34,11 +51,18 @@ def setMenu(img = img):
 
 	cv2.rectangle(img,(windowWidth-sizeOfmenuWindow,220),(windowWidth, 320),(255,255,255),-1)
 	cv2.putText(img, "Calculator", (windowWidth-sizeOfmenuWindow,280), cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,0),2,cv2.LINE_AA)
-
+'''
+SetColors function creates the different color options that appear in the left side
+side of the paint app.
+'''
 def setColors():
     for i in range(9):
         cv2.rectangle(img,(0,sizeOfColorChoices*i),(sizeOfColorChoices*2, sizeOfColorChoices*i+sizeOfColorChoices), colors[i] ,-1)
-
+'''
+setCalculator function creates all the openCV labels that draw a simple calulator with Addition
+Subtraction, Multiplication, and Division. It contains numbers from 0-9 as well as a C button to
+restart the equation.
+'''
 def setCalculator():
     cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2), 0),(int(windowWidth/2+sizeOfCalculator/2), windowHeight-100),(0,255,0),2)
     cv2.rectangle(img,(int(windowWidth/2-sizeOfCalculator/2)+20, 20),(int(windowWidth/2+sizeOfCalculator/2)-20, sizeOfCalButtons),(0,255,0),2)
@@ -86,7 +110,7 @@ def move(x,y):
     global choice
     global img
     global calEquation
-    
+
     if x > windowWidth - sizeOfmenuWindow and y < 320:
         if y < 100:
             choice = "paint"
@@ -131,9 +155,9 @@ def move(x,y):
                 counter2+=1
     else:
         n = int(windowWidth/2-sizeOfCalculator/2)
-        
+
         if(pressCalButton and x > 20+n and x < windowWidth/2+sizeOfCalculator/2-20 and y>sizeOfCalButtons+10 and y < sizeOfCalButtons*3+sizeOfCalButtons+20+(20*3)+sizeOfCalButtons):
-            
+
             if y< sizeOfCalButtons*2+20:
                 if x < n+sizeOfCalButtons+30:
                     calEquation += "1"
@@ -162,7 +186,7 @@ def move(x,y):
                     calEquation += "9"
                 elif x < n+sizeOfCalButtons*4+90:
                     calEquation += "*"
-                                    
+
             elif y < sizeOfCalButtons*5+80:
                 if x < n+sizeOfCalButtons+30:
                     calEquation = ""
@@ -176,10 +200,10 @@ setMenu()
 
 setColors()
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(0) #Change value to 1 if your device has more than 1 camera.
 
-cap.set(3, 1200)
-cap.set(4, 700)
+cap.set(3, 1200) #Sets the width of the cv2 window.
+cap.set(4, 700) #Sets the height of the cv2 window.
 
 pointX = 0
 pointY = 0
@@ -187,11 +211,11 @@ pointY = 0
 while(1):
     ret, videoImg = cap.read()
     videoImg = cv2.flip(videoImg, 1)
-    
+
     gray = cv2.cvtColor(videoImg, cv2.COLOR_BGR2GRAY)
 
     fist = fist_cascade.detectMultiScale(gray, 1.3,5)
-    
+
     if choice is not "paint":
         img = videoImg
         setMenu(img)
@@ -208,7 +232,7 @@ while(1):
             pressCalButton = True
         else:
             pressCalButton = False
-            
+
     else:
         for(x,y,w,h) in fist:
             pointX = x+int(w/2)
